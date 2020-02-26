@@ -51,7 +51,9 @@ const styles = {
   box: {
     borderRadius: '0.8em',
     border: '1px solid black',
-    padding: '0.3em'
+    padding: '0.3em',
+    maxWidth: '35em',
+    margin: '0 auto'
   },
   boxExpanded: {
     borderRadius: '0.8em 0.8em 0 0'
@@ -79,10 +81,11 @@ const styles = {
   },
   /* Recent searches */
   rsWrapper: {
-    margin: '0 0 0.4em',
+    margin: '0 auto 0.4em',
     borderRadius: '0 0 0.8em 0.8em',
     border: '3px solid lightblue',
     padding: '0.3em',
+    maxWidth: '35em'
   },
   /* tweet */
   wrapper: {
