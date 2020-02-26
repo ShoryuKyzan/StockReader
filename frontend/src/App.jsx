@@ -5,10 +5,31 @@ import { withStyles } from '@material-ui/core/styles';
 
 import { TextField } from '@material-ui/core';
 
+import Sidebar from "react-sidebar"; // XXX sidebar
+
 const styles = {
-  sidebar: {
-    display: 'none', /* TOOD desktop responsive view */
+  /* sidebar */
+  menuButton: {
+    position: 'absolute',
+    top: '3.2em',
+    left: '3em',
+    width: '2em',
+    height: '2em',
+    background: 'url(images/menu.svg)',
+    backgroundRepeat: 'no-repeat',
+    backgroundSize: '2em',
+    backgroundPosition: 'center center',
+    border: 'none'
   },
+  sidebarTitle: {
+    fontVariant: 'small-caps',
+    fontSize: '1.2em',
+    margin: '0.5em 0.5em'
+  },
+  sidebarContentWrapper: {
+    margin: '0.8em 0.8em 0'
+  },
+  /* main */
   main: {
     borderRadius: '1em',
     border: '1px solid lightblue',
@@ -26,6 +47,9 @@ const styles = {
     borderRadius: '0.8em',
     border: '1px solid black',
     padding: '0.3em'
+  },
+  boxExpanded: {
+    borderRadius: '0.8em 0.8em 0 0'
   },
   /* search term */
   stWrapper: {
@@ -50,10 +74,65 @@ const styles = {
   },
   /* Recent searches */
   rsWrapper: {
-    margin: '0.4em 0',
-    borderRadius: '0.8em',
+    margin: '0 0 0.4em',
+    borderRadius: '0 0 0.8em 0.8em',
     border: '3px solid lightblue',
     padding: '0.3em',
+  },
+  /* tweet */
+  wrapper: {
+    borderRadius: '0.8em',
+    border: '2px solid lightblue',
+    padding: '0.8em',
+    maxWidth: '30em',
+    margin: '0 auto 0.5em'
+  },
+  header: {
+    position: 'relative',
+    height: '4em',
+    marginBottom: '0.7em'
+  },
+  profilePic: {
+    position: 'absolute',
+    left: '0',
+    width: '4em',
+    height: '4em',
+    borderRadius: '2em',
+    border: '3px solid lightblue'
+  },
+  info: {
+    position: 'absolute',
+    left: '5em',
+    right: '0'
+  },
+  username: {
+    display: 'inline-block',
+    margin: '0.4em 0',
+    fontWeight: 'bold'
+  },
+  date: {
+    color: 'gray',
+    marginBottom: '1em'
+  },
+  link: {
+    background: 'no-repeat no-repeat center center url(images/external-link.svg)',
+    backgroundSize: '1em 1em',
+    width: '1em',
+    height: '1em',
+    right: '0em',
+    top: '0.6em',
+    position: 'absolute',
+  },
+  content: {
+  },
+};
+
+var sidebarStyle = {
+  sidebar: {
+      background: 'white',
+      borderRight: '0.7em solid lightblue',
+      width: '70%',
+      maxWidth: '16em'
   }
 };
 
@@ -61,6 +140,18 @@ class App extends React.Component {
 
   constructor(props){
     super(props);
+
+    this.state = {
+      menuOpen: false, // XXX sidebar
+    };
+
+    this.sidebarStateChanged = this.sidebarStateChanged.bind(this); // XXX sidebar
+  }
+
+  /* sync state of menu with state of component */
+  // XXX sidebar
+  sidebarStateChanged (open) {
+    this.setState({menuOpen: open})  
   }
 
   render(){
@@ -68,31 +159,11 @@ class App extends React.Component {
 
     return (
       <div>
-        <div className={classes.sidebar}>
-          {/* sidebar (desktop) */}
-          <div>
-            {/* Recent searches */}
-            <div>$PONY</div>
-            <div>$TOWN</div>
-            <div>$TOWN</div>
-          </div>
-        </div>
-        <div className={classes.main}>
-          <div className={classes.title}>Stock Tweets</div>
-          <div>
-            {/* Search */}
-            <div className={classes.box}>
-              {/* TODO for later we do this.
-              <span className={classes.searchTerm}>$PONY</span>
-              <span className={classes.searchTerm}>$TOWN</span>
-              */}
-              <div className={classes.inputWrapper}>
-                <input className={classes.searchText} name="search" value="term" />
-              </div>
-            </div>
-            <div>
-              {/* Recent searches */}
-              <div className={classes.rsWrapper}>
+        <Sidebar
+          sidebar={
+            <div className={classes.sidebar}>
+              <div className={classes.sidebarTitle}>Recent Searches</div>
+              <div className={classes.sidebarContentWrapper}>
                 <div className={classes.stWrapper}>
                   <div className={classes.searchTerm}>↻ $PONY</div>
                 </div>
@@ -104,20 +175,80 @@ class App extends React.Component {
                 </div>
               </div>
             </div>
-          </div>
+          }
+          open={this.state.menuOpen}
+          onSetOpen={this.sidebarStateChanged}
+          styles={sidebarStyle} >
+            <button className={classes.menuButton} onClick={() => this.sidebarStateChanged(true)}></button>
+        </Sidebar>
+
+        <div className={classes.main}>
+          
+          <div className={classes.title}>Stock Tweets</div>
+
           <div>
-            {/* search results */}
-            <div>
-              {/* tweet */}
-              <div>
-                left
-                picture
-              </div>
-              <div>
-                <div>username</div>
-                <div>right space tweet tweet tweet tweet tweet tweet</div>
+            {/* Search, regular*/}
+            <div className={classes.box}>
+              {/* TODO for later we do this.
+              <span className={classes.searchTerm}>$PONY</span>
+              <span className={classes.searchTerm}>$TOWN</span>
+              */}
+              <div className={classes.inputWrapper}>
+                <input className={classes.searchText} name="search" value="term" />
               </div>
             </div>
+
+            <div className={classes.box + ' ' + classes.boxExpanded}>
+              <div className={classes.inputWrapper}>
+                <input className={classes.searchText} name="search" value="term" />
+              </div>
+            </div>
+            {/* Recent searches */}
+            <div className={classes.rsWrapper}>
+              <div className={classes.stWrapper}>
+                <div className={classes.searchTerm}>↻ $PONY</div>
+              </div>
+              <div className={classes.stWrapper}>
+                <div className={classes.searchTerm}>↻ $TOWN</div>
+              </div>
+              <div className={classes.stWrapper}>
+                <div className={classes.searchTerm}>↻ $TOWN</div>
+              </div>
+            </div>
+          </div>
+          
+          <div>
+            {/* search results */}
+            {/* tweet */}
+            <div className={classes.wrapper}>
+              <div className={classes.header}>
+                <img className={classes.profilePic} src="images/icon.png" />
+                <div className={classes.info}>
+                  <div className={classes.username}>username</div>
+                  <div className={classes.date}>Feb 3 2019 10:22 am</div>
+                </div>
+                <a href="https://www.twitter.com" className={classes.link}></a>
+              </div>
+              <div className={classes.content}>
+                tweet tweet tweet tweet tweet tweet
+              </div>
+            </div>
+
+            {/* tweet */}
+            <div className={classes.wrapper}>
+              <div className={classes.header}>
+                <img className={classes.profilePic} src="images/icon.png" />
+                <div className={classes.info}>
+                  <div className={classes.username}>username</div>
+                  <div className={classes.date}>Feb 3 2019 10:22 am</div>
+                </div>
+                <a href="https://www.twitter.com" className={classes.link}></a>
+              </div>
+              <div className={classes.content}>
+                tweet tweet tweet tweet tweet tweet
+              </div>
+            </div>
+
           </div>
         </div>
       </div>
