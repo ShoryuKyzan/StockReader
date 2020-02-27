@@ -53,7 +53,6 @@ class SearchBar extends React.Component {
   }
 
   onFocus() {
-    console.log('aaa');
     this.setState({recentOpen: true});
   }
 

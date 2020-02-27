@@ -37,7 +37,8 @@ var sidebarStyle = {
       background: 'white',
       borderRight: '0.7em solid lightblue',
       width: '70%',
-      maxWidth: '16em'
+      maxWidth: '16em',
+      zIndex: '2000' /* pops over the searchbar if its sticky */
   },
   content: {
     position: "absolute",

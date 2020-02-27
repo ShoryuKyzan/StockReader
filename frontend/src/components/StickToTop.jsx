@@ -5,7 +5,7 @@ import VizSensor from 'react-visibility-sensor';
 const styles = {
   /* search */
   show: {
-      position: 'fixed',
+      position: 'absolute',
       display: 'block',
       top: 0,
       left: 0,
@@ -20,14 +20,10 @@ const styles = {
   }
 };
 
-class StickToTop extends React.Component {
+class _StickySensor extends React.Component {
 
   constructor(props){
     super(props);
-
-    this.state = {
-        showSticky: false,
-    };
   }
 
   render(){
@@ -36,16 +32,69 @@ class StickToTop extends React.Component {
     return (
         <div>
             <VizSensor
-                onChange={(isVisible) => {
-                    this.setState({showSticky: !isVisible})}}>
+                onChange={(isVisible) => {this.props.onShow(!isVisible)}}>
                 {this.props.children}
             </VizSensor>
-            <div className={this.state.showSticky ? classes.show : classes.hide }>
-                {this.props.children}
-            </div>
         </div>
     );
   }
 }
 
-export default withStyles(styles)(StickToTop);
+/* sticky wrapper */
+
+const styles2 = {
+  wrapper: {
+    position: 'relative',
+    width: '100%',
+    height: '100%'
+  },
+  /* search */
+  show: {
+      position: 'absolute',
+      display: 'block',
+      top: 0,
+      left: 0,
+      right: 0,
+      background: 'white',
+      zIndex: 1000,
+      padding: '0.5em 0.5em',
+      borderBottom: '3px solid lightblue'
+  },
+  hide: {
+      display: 'none'
+  },
+  scrollable: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    overflow: 'scroll'
+  }
+};
+
+class _StickyWrapper extends React.Component {
+
+  constructor(props){
+    super(props);
+  }
+
+  render(){
+    const classes = this.props.classes;
+
+    return (
+      <div className={classes.wrapper}>
+          <div className={this.props.show ? classes.show : classes.hide}>
+            {this.props.sticky}
+          </div>
+          <div className={classes.scrollable}>
+            {this.props.children}
+          </div>
+      </div>
+    );
+  }
+}
+
+export const StickySensor = withStyles(styles)(_StickySensor);
+
+export const StickyWrapper = withStyles(styles2)(_StickyWrapper);
