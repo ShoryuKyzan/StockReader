@@ -4,6 +4,7 @@ import { withStyles } from '@material-ui/core/styles';
 import SiteMenu from './components/SiteMenu';
 import SearchBar from './components/SearchBar';
 import Tweet from './components/Tweet';
+import StickToTop from './components/StickToTop';
 
 const styles = {
   main: {
@@ -35,11 +36,17 @@ class App extends React.Component {
             <div className={classes.main} id='content'>
               
               <div className={classes.title}>Stock Tweets</div>
-
-              <SearchBar />
+              
+              <StickToTop>
+                <SearchBar />
+              </StickToTop>
 
               <div>
                 {/* search results */}
+                <Tweet />
+                <Tweet />
+                <Tweet />
+                <Tweet />
                 <Tweet />
                 <Tweet />
                 <Tweet />
