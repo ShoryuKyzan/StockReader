@@ -7,21 +7,6 @@ import RecentSearches from './RecentSearches';
 const mql = window.matchMedia(`(min-width: 800px)`);
 
 const styles = {
-  menuButton: {
-    position: 'absolute',
-    top: '3.2em',
-    left: '3em',
-    width: '2em',
-    height: '2em',
-    background: 'url(images/menu.svg)',
-    backgroundRepeat: 'no-repeat',
-    backgroundSize: '2em',
-    backgroundPosition: 'center center',
-    border: 'none'
-  },
-  hideMenuButton: {
-    display: 'none'
-  },
   sidebarTitle: {
     fontVariant: 'small-caps',
     fontSize: '1.2em',
@@ -83,10 +68,12 @@ class SiteMenu extends React.Component {
     this.setState({ desktopMode: mql.matches, menuOpen: false });
   }
 
+  toggleMenuOpen(){
+    this.setState({menuOpen: !this.state.menuOpen});
+  }
+
   render(){
     const classes = this.props.classes;
-
-    const toggleInDesktop = this.state.desktopMode ? classes.hideMenuButton : '';
 
     return (
       <div>
@@ -106,9 +93,6 @@ class SiteMenu extends React.Component {
             onSetOpen={this.sidebarStateChanged}
             styles={sidebarStyle} >
           
-            <button
-              className={classes.menuButton + ' ' + toggleInDesktop} 
-              onClick={() => this.sidebarStateChanged(true)}></button>
 
             {this.props.children}
 
