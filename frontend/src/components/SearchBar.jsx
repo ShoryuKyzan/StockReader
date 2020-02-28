@@ -1,8 +1,7 @@
 import React from 'react';
 import { withStyles } from '@material-ui/core/styles';
 
-import RecentSearches from './RecentSearches';
-import API from '../API';
+import { reloadRecentSearches, RecentSearches } from './RecentSearches';
 
 const styles = {
   /* search */
@@ -47,13 +46,13 @@ class SearchBar extends React.Component {
     super(props);
 
     this.state = {
-        recentOpen: false,
-        recentSearches: []
+        recentOpen: false
     };
     this.onFocus = this.onFocus.bind(this);
     this.onBlur = this.onBlur.bind(this);
+    this.search = this.search.bind(this);
 
-    this.state.recentSearches = API.RecentSearches.list(); // XXX
+    this.searchBox = React.createRef();
   }
 
   onFocus() {
@@ -62,6 +61,14 @@ class SearchBar extends React.Component {
 
   onBlur() {
     this.setState({recentOpen: false});
+  }
+
+  search(e) {
+    if(e.charCode !== 13){
+      return;
+    }
+    console.log('searched', this.searchBox.current.value); // XXX
+    reloadRecentSearches();
   }
 
   render(){
@@ -79,13 +86,15 @@ class SearchBar extends React.Component {
                 */}
                 <div className={classes.inputWrapper}>
                     <input
+                        ref={this.searchBox}
                         onFocus={this.onFocus}
                         onBlur={this.onBlur}
-                        className={classes.searchText} name="search" value="term" />
+                        onKeyPress={this.search}
+                        className={classes.searchText} name="search"/>
                 </div>
             </div>
             <div className={classes.rsWrapper + ' ' + recentOpenClass}>
-                <RecentSearches list={this.state.recentSearches}/>
+                <RecentSearches />
             </div>
         </div>
     );

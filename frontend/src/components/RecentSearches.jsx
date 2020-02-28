@@ -1,5 +1,9 @@
 import React from 'react';
 import { withStyles } from '@material-ui/core/styles';
+import { publish, Subscriber, RefreshRecentSearches } from './PubSub';
+import API from '../API';
+
+export const reloadRecentSearches = (data) => publish(RefreshRecentSearches, data);
 
 const styles = {
   /* search term */
@@ -16,12 +20,29 @@ const styles = {
   }
 };
 
-class RecentSearches extends React.Component {
+class _RecentSearches extends React.Component {
 
   constructor(props){
     super(props);
-    console.log(props);//XXX
 
+    this.state = {
+      list: API.RecentSearches.list()
+    };
+    
+    this.sub = new Subscriber(RefreshRecentSearches, this.refresh.bind(this));
+
+  }
+
+  /**
+   * Reload recent searches from store
+   */
+  refresh() {
+    console.log('refreshed recent searhces');
+    this.setState({list: API.RecentSearches.list()});
+  }
+
+  componentWillUnmount(){
+    this.sub.destroy();
   }
 
   render(){
@@ -46,4 +67,4 @@ class RecentSearches extends React.Component {
 }
 
 
-export default withStyles(styles)(RecentSearches);
+export const RecentSearches = withStyles(styles)(_RecentSearches);

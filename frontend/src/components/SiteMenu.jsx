@@ -2,7 +2,7 @@ import React from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import Sidebar from "react-sidebar";
 
-import RecentSearches from './RecentSearches';
+import { RecentSearches } from './RecentSearches';
 import API from '../API';
 
 const mql = window.matchMedia(`(min-width: 800px)`);
