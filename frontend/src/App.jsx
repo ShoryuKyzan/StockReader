@@ -48,12 +48,41 @@ class App extends React.Component {
       desktopMode: mql.matches,
       showSticky: false,
       sidebarOpen: false,
+      tweets: []
     };
     this.onShowSticky = this.onShowSticky.bind(this);
     this.mediaQueryChanged = this.mediaQueryChanged.bind(this);
     this.menuButtonClick = this.menuButtonClick.bind(this);
 
     this.siteMenu = React.createRef();
+
+    const tweets = [
+      {
+        id: 1,
+        date: Date.now(),
+        content: 'asdf asdf asdf',
+        user: 'user1',
+        link: 'https://www.twitter.com/a',
+        icon: 'images/icon.png'
+      },
+      {
+        id: 2,
+        date: Date.now() + 1,
+        content: 'asdf asdf asdf',
+        user: 'user1',
+        link: 'https://www.twitter.com',
+        icon: 'images/icon.png'
+      },
+      {
+        id: 3,
+        date: Date.now() + 2,
+        content: 'asdf asdf asdf',
+        user: 'user1',
+        link: 'https://www.twitter.com',
+        icon: 'images/icon.png'
+      }
+    ]; // XXX Mock
+    this.state.tweets = tweets;
   }
 
   onShowSticky(show) {
@@ -83,6 +112,11 @@ class App extends React.Component {
 
     const toggleInDesktop = this.state.desktopMode ? classes.hideMenuButton : '';
 
+    const tweets = [];
+    this.state.tweets.forEach((tweet) => {
+      tweets.push(<Tweet tweet={tweet}/>)
+    });
+
     return (
       <div>
         <SiteMenu ref={this.siteMenu}>
@@ -104,11 +138,7 @@ class App extends React.Component {
 
               <div>
                 {/* search results */}
-                <Tweet />
-                <Tweet />
-                <Tweet />
-                <Tweet />
-                <Tweet />
+                {tweets}
 
               </div>
             </div>
