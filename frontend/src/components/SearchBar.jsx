@@ -53,6 +53,7 @@ class SearchBar extends React.Component {
     this.search = this.search.bind(this);
 
     this.searchBox = React.createRef();
+    this.recentSearches = React.createRef();
   }
 
   onFocus() {
@@ -74,8 +75,16 @@ class SearchBar extends React.Component {
   render(){
     const classes = this.props.classes;
 
-    const recentOpenClass = this.state.recentOpen ? classes.showRecent : '';
-    const searchBarExpanded = this.state.recentOpen ? classes.boxExpanded : '';
+    let recentOpenClass = this.state.recentOpen ? classes.showRecent : '';
+    let searchBarExpanded = this.state.recentOpen ? classes.boxExpanded : '';
+
+    if(this.recentSearches.current){
+      console.log('this.recentSearches.current', this.recentSearches.current.isEmpty());
+    }
+    if(this.recentSearches.current && this.recentSearches.current.isEmpty()){
+      recentOpenClass = '';
+      searchBarExpanded = '';
+    }
 
     return (
         <div className={classes.main}>
@@ -94,7 +103,7 @@ class SearchBar extends React.Component {
                 </div>
             </div>
             <div className={classes.rsWrapper + ' ' + recentOpenClass}>
-                <RecentSearches />
+                <RecentSearches ref={this.recentSearches} />
             </div>
         </div>
     );

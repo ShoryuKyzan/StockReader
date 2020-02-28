@@ -41,6 +41,10 @@ class _RecentSearches extends React.Component {
     this.setState({list: API.RecentSearches.list()});
   }
 
+  isEmpty(){
+    return this.state.list.length === 0;
+  }
+
   componentWillUnmount(){
     this.sub.destroy();
   }
@@ -48,11 +52,11 @@ class _RecentSearches extends React.Component {
   render(){
     const classes = this.props.classes;
     const terms = [];
-    if(this.props.list){
-      this.props.list.forEach(term => {
+    if(this.state.list){
+      this.state.list.forEach((term,i) => {
         terms.push(
           <div className={classes.termWrapper}>
-            <div className={classes.searchTerm}>↻ {term.term}</div>
+            <div key={i} className={classes.searchTerm}>↻ {term.term}</div>
           </div>
         )
       });
