@@ -58,18 +58,29 @@ class Tweet extends React.Component {
   render(){
     const classes = this.props.classes;
 
+    var date = new Date(this.props.tweet.date);
+
+    const month = date.toLocaleString('default', { month: 'short' })
+    const hours = ("0" + date.getHours()).slice(-2);
+    const minutes = ("0" + date.getMinutes()).slice(-2);
+    const seconds = ("0" + date.getSeconds()).slice(-2);
+    const day = date.getDay();
+    const year = date.getFullYear();
+    const formattedDate = month + ' ' + day + ' ' + year + ' ' + hours + ':' + minutes + ':' + seconds;
+    console.log('date', date.getMonth); // XXX
+    
     return (
         <div className={classes.wrapper}>
             <div className={classes.header}>
-            <img className={classes.profilePic} src="images/icon.png" />
+            <img className={classes.profilePic} src={this.props.tweet.icon} />
             <div className={classes.info}>
-                <div className={classes.username}>username</div>
-                <div className={classes.date}>Feb 3 2019 10:22 am</div>
+                <div className={classes.username}>{this.props.tweet.user}</div>
+                <div className={classes.date}>{formattedDate}</div>
             </div>
-            <a href="https://www.twitter.com" className={classes.link}></a>
+            <a href={this.props.tweet.link} className={classes.link}></a>
             </div>
             <div className={classes.content}>
-            tweet tweet tweet tweet tweet tweet
+              {this.props.tweet.content}
             </div>
         </div>
     );
