@@ -45,14 +45,11 @@ class SiteMenu extends React.Component {
 
     this.state = {
       menuOpen: false,
-      desktopMode: mql.matches,
-      recentSearches: []
+      desktopMode: mql.matches
     };
 
     this.sidebarStateChanged = this.sidebarStateChanged.bind(this);
     this.mediaQueryChanged = this.mediaQueryChanged.bind(this);
-
-    this.state.recentSearches = API.RecentSearches.list(); // XXX
   }
 
   /* sync state of menu with state of component */
@@ -89,7 +86,7 @@ class SiteMenu extends React.Component {
             <div className={classes.sidebar}>
                 <div className={classes.sidebarTitle}>Recent Searches</div>
                 <div className={classes.sidebarContentWrapper}>
-                    <RecentSearches list={this.state.recentSearches}/>
+                    <RecentSearches />
                 </div>
             </div>
             }
