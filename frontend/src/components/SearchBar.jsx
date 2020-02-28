@@ -2,6 +2,7 @@ import React from 'react';
 import { withStyles } from '@material-ui/core/styles';
 
 import RecentSearches from './RecentSearches';
+import API from '../API';
 
 const styles = {
   /* search */
@@ -46,10 +47,13 @@ class SearchBar extends React.Component {
     super(props);
 
     this.state = {
-        recentOpen: false
+        recentOpen: false,
+        recentSearches: []
     };
     this.onFocus = this.onFocus.bind(this);
     this.onBlur = this.onBlur.bind(this);
+
+    this.state.recentSearches = API.RecentSearches.list(); // XXX
   }
 
   onFocus() {
@@ -81,7 +85,7 @@ class SearchBar extends React.Component {
                 </div>
             </div>
             <div className={classes.rsWrapper + ' ' + recentOpenClass}>
-                <RecentSearches />
+                <RecentSearches list={this.state.recentSearches}/>
             </div>
         </div>
     );

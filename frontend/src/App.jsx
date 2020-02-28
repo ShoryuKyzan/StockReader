@@ -5,6 +5,7 @@ import SiteMenu from './components/SiteMenu';
 import SearchBar from './components/SearchBar';
 import Tweet from './components/Tweet';
 import { StickySensor, StickyWrapper } from './components/StickToTop';
+import API from './API';
 
 const mql = window.matchMedia(`(min-width: 800px)`);
 
@@ -56,33 +57,7 @@ class App extends React.Component {
 
     this.siteMenu = React.createRef();
 
-    const tweets = [
-      {
-        id: 1,
-        date: Date.now(),
-        content: 'asdf asdf asdf',
-        user: 'user1',
-        link: 'https://www.twitter.com/a',
-        icon: 'images/icon.png'
-      },
-      {
-        id: 2,
-        date: Date.now() + 1,
-        content: 'asdf asdf asdf',
-        user: 'user1',
-        link: 'https://www.twitter.com',
-        icon: 'images/icon.png'
-      },
-      {
-        id: 3,
-        date: Date.now() + 2,
-        content: 'asdf asdf asdf',
-        user: 'user1',
-        link: 'https://www.twitter.com',
-        icon: 'images/icon.png'
-      }
-    ]; // XXX Mock
-    this.state.tweets = tweets;
+    API.Backend.search('XXX', 0, 0).then(response => this.setState({tweets: response}));
   }
 
   onShowSticky(show) {

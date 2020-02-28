@@ -20,23 +20,26 @@ class RecentSearches extends React.Component {
 
   constructor(props){
     super(props);
+    console.log(props);//XXX
 
   }
 
   render(){
     const classes = this.props.classes;
+    const terms = [];
+    if(this.props.list){
+      this.props.list.forEach(term => {
+        terms.push(
+          <div className={classes.termWrapper}>
+            <div className={classes.searchTerm}>↻ {term.term}</div>
+          </div>
+        )
+      });
+    }
 
     return (
         <div>
-            <div className={classes.termWrapper}>
-                <div className={classes.searchTerm}>↻ $PONY</div>
-            </div>
-            <div className={classes.termWrapper}>
-                <div className={classes.searchTerm}>↻ $TOWN</div>
-            </div>
-            <div className={classes.termWrapper}>
-                <div className={classes.searchTerm}>↻ $TOWN</div>
-            </div>
+          {terms}
         </div>
     );
   }

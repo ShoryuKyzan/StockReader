@@ -3,6 +3,7 @@ import { withStyles } from '@material-ui/core/styles';
 import Sidebar from "react-sidebar";
 
 import RecentSearches from './RecentSearches';
+import API from '../API';
 
 const mql = window.matchMedia(`(min-width: 800px)`);
 
@@ -44,11 +45,14 @@ class SiteMenu extends React.Component {
 
     this.state = {
       menuOpen: false,
-      desktopMode: mql.matches
+      desktopMode: mql.matches,
+      recentSearches: []
     };
 
     this.sidebarStateChanged = this.sidebarStateChanged.bind(this);
     this.mediaQueryChanged = this.mediaQueryChanged.bind(this);
+
+    this.state.recentSearches = API.RecentSearches.list(); // XXX
   }
 
   /* sync state of menu with state of component */
@@ -85,7 +89,7 @@ class SiteMenu extends React.Component {
             <div className={classes.sidebar}>
                 <div className={classes.sidebarTitle}>Recent Searches</div>
                 <div className={classes.sidebarContentWrapper}>
-                    <RecentSearches />
+                    <RecentSearches list={this.state.recentSearches}/>
                 </div>
             </div>
             }
