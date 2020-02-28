@@ -66,12 +66,14 @@ class SearchBar extends React.Component {
   }
 
   search(e) {
+    // TODO make sure this works on mobile! i have no search button!
     if(e.charCode !== 13){
       return;
     }
     // TODO do this on successful search
     API.RecentSearches.add(this.searchBox.current.value);
     reloadRecentSearches();
+    setTimeout(() => this.setState({recentOpen: true}), 0); // trigger trying to show it.
   }
 
   render(){

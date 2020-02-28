@@ -81,7 +81,32 @@ class Backend {
             user: 'user1',
             link: 'https://www.twitter.com',
             icon: 'images/icon.png'
-        }];
+        },
+        {
+            id: 4,
+            date: Date.now() + 2,
+            content: 'asdf asdf asdf',
+            user: 'user1',
+            link: 'https://www.twitter.com',
+            icon: 'images/icon.png'
+        },
+        {
+            id: 5,
+            date: Date.now() + 2,
+            content: 'asdf asdf asdf',
+            user: 'user1',
+            link: 'https://www.twitter.com',
+            icon: 'images/icon.png'
+        },
+        {
+            id: 6,
+            date: Date.now() + 2,
+            content: 'asdf asdf asdf',
+            user: 'user1',
+            link: 'https://www.twitter.com',
+            icon: 'images/icon.png'
+        },
+        ];
     }
 }
 
@@ -107,7 +132,7 @@ class RecentSearches {
     
     static add(search) {
         search = search.trim();
-        
+
         let list = RecentSearches._get();
 
         // do not add duplicates
