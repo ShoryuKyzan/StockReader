@@ -57,6 +57,10 @@ class _RecentSearches extends React.Component {
     API.RecentSearches.remove(term.term);
     // refresh all instances of this control
     reloadRecentSearches();
+    if(this.props.onDeleted){
+      // trigger after update
+      setTimeout(() => this.props.onDeleted(), 0);
+    }
   }
 
   componentWillUnmount(){

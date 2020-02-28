@@ -52,16 +52,28 @@ class SearchBar extends React.Component {
     this.onFocus = this.onFocus.bind(this);
     this.onBlur = this.onBlur.bind(this);
     this.search = this.search.bind(this);
+    this.onDeleteRecentSearch = this.onDeleteRecentSearch.bind(this);
 
     this.searchBox = React.createRef();
     this.recentSearches = React.createRef();
   }
 
-  onFocus() {
+  componentDidMount(){
+    document.body.addEventListener('click', this.onBlur);
+  }
+
+  componentWillUnmount(){
+    document.body.removeEventListener('click', this.onBlur);
+  }
+
+  /** Fired whenever this element is clicked not just input box */
+  onFocus(e) {
     this.setState({recentOpen: true});
+    e.stopPropagation();
   }
 
   onBlur() {
+    // dont do it...
     this.setState({recentOpen: false});
   }
 
@@ -76,6 +88,14 @@ class SearchBar extends React.Component {
     setTimeout(() => this.setState({recentOpen: true}), 0); // trigger trying to show it.
   }
 
+  onDeleteRecentSearch() {
+    // close recent searches if empty
+    console.log('called', this.recentSearches.current.isEmpty());
+    if(this.recentSearches.current && this.recentSearches.current.isEmpty()){
+      setTimeout(() => this.setState({recentOpen: false}), 0);
+    }
+  }
+
   render(){
     const classes = this.props.classes;
 
@@ -88,7 +108,7 @@ class SearchBar extends React.Component {
     }
 
     return (
-        <div className={classes.main}>
+        <div className={classes.main} onClick={this.onFocus}>
             <div className={classes.box + ' ' + searchBarExpanded}>
                 {/* TODO for later we do this.
                 <span className={classes.searchTerm}>$PONY</span>
@@ -98,13 +118,12 @@ class SearchBar extends React.Component {
                     <input
                         ref={this.searchBox}
                         onFocus={this.onFocus}
-                        onBlur={this.onBlur}
                         onKeyPress={this.search}
                         className={classes.searchText} name="search"/>
                 </div>
             </div>
             <div className={classes.rsWrapper + ' ' + recentOpenClass}>
-                <RecentSearches ref={this.recentSearches} />
+                <RecentSearches ref={this.recentSearches} onDeleted={this.onDeleteRecentSearch}/>
             </div>
         </div>
     );
