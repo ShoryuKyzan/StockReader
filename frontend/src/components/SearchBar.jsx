@@ -90,7 +90,6 @@ class SearchBar extends React.Component {
 
   onDeleteRecentSearch() {
     // close recent searches if empty
-    console.log('called', this.recentSearches.current.isEmpty());
     if(this.recentSearches.current && this.recentSearches.current.isEmpty()){
       setTimeout(() => this.setState({recentOpen: false}), 0);
     }

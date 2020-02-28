@@ -53,7 +53,6 @@ class _RecentSearches extends React.Component {
   }
 
   remove(term){
-    console.log('term', term.term);
     API.RecentSearches.remove(term.term);
     // refresh all instances of this control
     reloadRecentSearches();
