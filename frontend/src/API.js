@@ -86,29 +86,50 @@ class Backend {
 }
 
 class RecentSearches {
+    static _createIfNotExist(){
+        if(!localStorage['recentSearches']){
+            localStorage['recentSearches'] = JSON.stringify([]);
+        }
+    }
+
+    static _get() {
+        RecentSearches._createIfNotExist();
+        return JSON.parse(localStorage['recentSearches']);
+    }
+
+    static _set(newList) {
+        localStorage['recentSearches'] = JSON.stringify(newList);
+    }
+
     static list(){
-        return [
-            {
-                term: '$PONY',
-                date: Date.now() - 1
-            },
-            {
-                term: '$TOWN',
-                date: Date.now() - 2
-            },
-            {
-                term: '$LAND',
-                date: Date.now() - 3
-            }
-        ]; // XXX mock
+        return RecentSearches._get();
     }
     
     static add(search) {
-        // XXX todo
+        search = search.trim();
+        
+        let list = RecentSearches._get();
+
+        // do not add duplicates
+        const found = list.find(term => term.term === search);
+        if(found){
+            return;
+        }
+
+        list.unshift({
+            term: search,
+            date: Date.now()
+        });
+
+        // limit to 10
+        list = list.slice(0,10);
+
+        RecentSearches._set(list);
     }
     
-    static remove(id) {
-        // XXX todo
+    static remove(search) {
+        const newList = RecentSearches._get().filter(term => term.term !== search);
+        RecentSearches._set(newList);
     }
 }
 

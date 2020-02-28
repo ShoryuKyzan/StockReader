@@ -37,7 +37,6 @@ class _RecentSearches extends React.Component {
    * Reload recent searches from store
    */
   refresh() {
-    console.log('refreshed recent searhces');
     this.setState({list: API.RecentSearches.list()});
   }
 

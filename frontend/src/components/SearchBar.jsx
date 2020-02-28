@@ -2,6 +2,7 @@ import React from 'react';
 import { withStyles } from '@material-ui/core/styles';
 
 import { reloadRecentSearches, RecentSearches } from './RecentSearches';
+import API from '../API';
 
 const styles = {
   /* search */
@@ -68,7 +69,8 @@ class SearchBar extends React.Component {
     if(e.charCode !== 13){
       return;
     }
-    console.log('searched', this.searchBox.current.value); // XXX
+    // TODO do this on successful search
+    API.RecentSearches.add(this.searchBox.current.value);
     reloadRecentSearches();
   }
 
@@ -78,9 +80,6 @@ class SearchBar extends React.Component {
     let recentOpenClass = this.state.recentOpen ? classes.showRecent : '';
     let searchBarExpanded = this.state.recentOpen ? classes.boxExpanded : '';
 
-    if(this.recentSearches.current){
-      console.log('this.recentSearches.current', this.recentSearches.current.isEmpty());
-    }
     if(this.recentSearches.current && this.recentSearches.current.isEmpty()){
       recentOpenClass = '';
       searchBarExpanded = '';

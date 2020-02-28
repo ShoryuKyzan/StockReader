@@ -67,7 +67,6 @@ class Tweet extends React.Component {
     const day = date.getDay();
     const year = date.getFullYear();
     const formattedDate = month + ' ' + day + ' ' + year + ' ' + hours + ':' + minutes + ':' + seconds;
-    console.log('date', date.getMonth); // XXX
     
     return (
         <div className={classes.wrapper}>
