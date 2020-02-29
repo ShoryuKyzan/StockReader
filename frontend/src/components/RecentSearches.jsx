@@ -2,6 +2,7 @@ import React from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import { publish, Subscriber, RefreshRecentSearches } from './PubSub';
 import API from '../API';
+import { setSearch } from './SearchBar';
 
 export const reloadRecentSearches = (data) => publish(RefreshRecentSearches, data);
 
@@ -36,7 +37,8 @@ class _RecentSearches extends React.Component {
     this.state = {
       list: API.RecentSearches.list()
     };
-    
+    this.termClick = this.termClick.bind(this);
+
     this.sub = new Subscriber(RefreshRecentSearches, this.refresh.bind(this));
 
   }
@@ -66,16 +68,29 @@ class _RecentSearches extends React.Component {
     this.sub.destroy();
   }
 
+  termClick(term) {
+    setSearch(term.term);
+    if(this.props.onTermClicked){
+      this.props.onTermClicked(term.term);
+    }
+  }
+
   render(){
     const classes = this.props.classes;
     const terms = [];
     if(this.state.list){
       this.state.list.forEach((term,i) => {
         terms.push(
-          <div className={classes.termWrapper}>
-            <div key={i} className={classes.searchTerm}>
-              ↻ {term.term}
-              <a onClick={e => this.remove(term)} className={classes.delete}>X</a>
+          <div key={i} className={classes.termWrapper}>
+            <div className={classes.searchTerm}>
+              <span
+                onClick={() => this.termClick(term)}>
+                ↻ {term.term}
+              </span>
+              <a onClick={e => {
+                // XXX e.stopPropagation();
+                this.remove(term)
+              }} className={classes.delete}>X</a>
             </div>
           </div>
         )

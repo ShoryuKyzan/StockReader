@@ -54,6 +54,7 @@ class App extends React.Component {
     this.onShowSticky = this.onShowSticky.bind(this);
     this.mediaQueryChanged = this.mediaQueryChanged.bind(this);
     this.menuButtonClick = this.menuButtonClick.bind(this);
+    this.onSearch = this.onSearch.bind(this);
 
     this.siteMenu = React.createRef();
 
@@ -80,16 +81,22 @@ class App extends React.Component {
     this.siteMenu.current.toggleMenuOpen()
   }
 
+  onSearch(term){
+    return API.Backend.search(term).then((tweets) => {
+      this.setState({tweets});
+    }).catch(err => console.error('error during search', err));
+  }
+
   render(){
     const classes = this.props.classes;
 
-    const stickyElement = <SearchBar />;
+    const stickyElement = <SearchBar onSearch={this.onSearch}/>;
 
     const toggleInDesktop = this.state.desktopMode ? classes.hideMenuButton : '';
 
     const tweets = [];
-    this.state.tweets.forEach((tweet) => {
-      tweets.push(<Tweet tweet={tweet}/>)
+    this.state.tweets.forEach((tweet, i) => {
+      tweets.push(<Tweet key={i} tweet={tweet}/>)
     });
 
     return (

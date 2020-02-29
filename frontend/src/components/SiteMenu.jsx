@@ -86,7 +86,7 @@ class SiteMenu extends React.Component {
             <div className={classes.sidebar}>
                 <div className={classes.sidebarTitle}>Recent Searches</div>
                 <div className={classes.sidebarContentWrapper}>
-                    <RecentSearches />
+                    <RecentSearches onTermClicked={this.toggleMenuOpen.bind(this)} />
                 </div>
             </div>
             }

@@ -1,33 +1,14 @@
 // production url, this may be typically baked into configuration instead of here
-var BACKEND_URL = 'http://api.comicsite.com';
+var BACKEND_URL = 'http://localhost';
 var developmentMode = false;
 var productionMode = true;
 
 // If in development mode, change the backend url
 if(window.location.port === '3000')
 {
-    BACKEND_URL = 'http://api.comicsite.com:8000'
+    BACKEND_URL = 'http://localhost:8000'
     developmentMode = true;
     productionMode = false;
-}
-
-function callJSONMethod(uri, data){
-    return fetch(BACKEND_URL + uri, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(data)
-    }).then(response => {
-        if(response.status === 200){
-            return response.json();
-        }else{
-            throw new Error(response.json());
-        }
-    })
-    .catch(reason => {
-        throw new Error(reason);
-    });
 }
 
 function callGETMethod(uri){
@@ -57,6 +38,9 @@ class Backend {
      * @returns {Array<Object>} Returns an array of tweet objects.
      */
     static async search(terms, firstPage, lastPage){
+        // XXX first/lastpage not used yet
+        const results = await callGETMethod('/search' + '?q=' + terms);
+        return results;
         // XXX mock
         return [{
             id: 1,
@@ -132,6 +116,9 @@ class RecentSearches {
     
     static add(search) {
         search = search.trim();
+        if(search === ''){
+            return;
+        }
 
         let list = RecentSearches._get();
 
