@@ -54,11 +54,14 @@ class App extends React.Component {
     this.onShowSticky = this.onShowSticky.bind(this);
     this.mediaQueryChanged = this.mediaQueryChanged.bind(this);
     this.menuButtonClick = this.menuButtonClick.bind(this);
+    this.onAutoRefresh = this.onAutoRefresh.bind(this);
     this.onSearch = this.onSearch.bind(this);
 
     this.siteMenu = React.createRef();
 
-    API.Backend.search('XXX', 0, 0).then(response => this.setState({tweets: response}));
+    this.autoRefresh = null;
+    this.autoRefreshTerm = null;
+    this.autoRefreshTime = 20*1000;
   }
 
   onShowSticky(show) {
@@ -68,10 +71,20 @@ class App extends React.Component {
   componentWillMount() {
     mql.addListener(this.mediaQueryChanged);
   }
- 
+
+  componentDidMount(){
+    // start auto-refresh interval
+    this.autoRefresh = setInterval(this.onAutoRefresh, this.autoRefreshTime);
+  }
+
   componentWillUnmount() {
     mql.removeListener(this.mediaQueryChanged);
+
+    if(this.autoRefresh){
+      clearInterval(this.autoRefresh);
+    }
   }
+
 
   mediaQueryChanged() {
     this.setState({ desktopMode: mql.matches});
@@ -81,7 +94,16 @@ class App extends React.Component {
     this.siteMenu.current.toggleMenuOpen()
   }
 
+  onAutoRefresh(){
+    console.log('autorefresh', this.autoRefreshTerm, new Date()); // XXX
+    if(this.autoRefreshTerm){
+      this.onSearch(this.autoRefreshTerm);
+    }
+  }
+
   onSearch(term){
+    this.autoRefreshTerm = term;
+    console.log('onsearch', this.autoRefreshTerm); // XXX
     return API.Backend.search(term).then((tweets) => {
       this.setState({tweets});
     }).catch(err => console.error('error during search', err));

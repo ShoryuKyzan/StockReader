@@ -36,15 +36,6 @@ const styles = {
     color: 'gray',
     marginBottom: '1em'
   },
-  link: {
-    background: 'no-repeat no-repeat center center url(images/external-link.svg)',
-    backgroundSize: '1em 1em',
-    width: '1em',
-    height: '1em',
-    right: '0em',
-    top: '0.6em',
-    position: 'absolute',
-  },
   content: {
   },
 };
@@ -76,7 +67,6 @@ class Tweet extends React.Component {
                 <div className={classes.username}>{this.props.tweet.user}</div>
                 <div className={classes.date}>{formattedDate}</div>
             </div>
-            <a href={this.props.tweet.link} className={classes.link}></a>
             </div>
             <div className={classes.content}>
               {this.props.tweet.content}

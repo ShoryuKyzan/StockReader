@@ -74,8 +74,10 @@ class SearchBar extends React.Component {
 
   /** Fired whenever this element is clicked not just input box */
   onFocus(e) {
-    this.setState({recentOpen: true});
-    e.stopPropagation();
+    if(!this.state.recentOpen){
+      this.setState({recentOpen: true});
+      e.stopPropagation();
+    }
   }
 
   onBlur() {
@@ -139,7 +141,6 @@ class SearchBar extends React.Component {
                 <div className={classes.inputWrapper}>
                     <input
                         ref={this.searchBox}
-                        onFocus={this.onFocus}
                         onKeyPress={this.onKeyPress}
                         className={classes.searchText} name="search"/>
                 </div>
