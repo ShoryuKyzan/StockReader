@@ -1,5 +1,6 @@
 // production url, this may be typically baked into configuration instead of here
-var BACKEND_URL = 'http://localhost';
+// yes its no different from dev version
+var BACKEND_URL = 'http://localhost:8000';
 var developmentMode = false;
 var productionMode = true;
 
