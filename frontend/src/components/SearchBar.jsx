@@ -141,6 +141,7 @@ class SearchBar extends React.Component {
                 <div className={classes.inputWrapper}>
                     <input
                         ref={this.searchBox}
+                        onFocus={this.onFocus}
                         onKeyPress={this.onKeyPress}
                         className={classes.searchText} name="search"/>
                 </div>

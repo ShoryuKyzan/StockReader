@@ -79,7 +79,8 @@ function parseResults(results) {
             messages[msg.id] = {
                 id: msg.id,
                 date: Date.parse(msg.created_at),
-                content: msg.body,
+                // strip html tags out, but allow for html special codes like &amp;
+                content: msg.body.replace(/[<>]/g, ''),
                 user: msg.user.username,
                 icon: msg.user.avatar_url,
                 // extra: which symbols in there

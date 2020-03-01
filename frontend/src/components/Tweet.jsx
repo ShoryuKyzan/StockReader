@@ -58,7 +58,7 @@ class Tweet extends React.Component {
     const day = date.getDay();
     const year = date.getFullYear();
     const formattedDate = month + ' ' + day + ' ' + year + ' ' + hours + ':' + minutes + ':' + seconds;
-    
+
     return (
         <div className={classes.wrapper}>
             <div className={classes.header}>
@@ -68,9 +68,7 @@ class Tweet extends React.Component {
                 <div className={classes.date}>{formattedDate}</div>
             </div>
             </div>
-            <div className={classes.content}>
-              {this.props.tweet.content}
-            </div>
+            <div className={classes.content} dangerouslySetInnerHTML={{ __html: this.props.tweet.content}}></div>
         </div>
     );
   }

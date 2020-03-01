@@ -46,7 +46,7 @@ class Backend {
         return [{
             id: 1,
             date: Date.now(),
-            content: 'asdf asdf asdf',
+            content: 'asdf asdf asdf &quot; &amp; &amp;',
             user: 'user1',
             link: 'https://www.twitter.com/a',
             icon: 'images/icon.png'
