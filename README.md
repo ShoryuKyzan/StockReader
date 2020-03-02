@@ -37,6 +37,5 @@ Set up a docker environment.
 * Run npm install -g nodemon
 * Run npm install
 * Run nodemon main.js
-* Will run an API server on port 8000, but CORS policy won't allow it to be accessed directly without modifying the cors filter function early in main.js.
-* CORS policy is set to allow localhost.
+* Will run an API server on port 8000
 * You can also just run ./dev-build.sh, ./dev-up.sh to start a backend in your docker engine (also running on port 8000, forwarded to your local 8000).

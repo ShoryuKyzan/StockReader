@@ -58,6 +58,7 @@ class App extends React.Component {
     this.onSearch = this.onSearch.bind(this);
 
     this.siteMenu = React.createRef();
+    this.scrollingDiv = React.createRef();
 
     this.autoRefresh = null;
     this.autoRefreshTerm = null;
@@ -104,6 +105,8 @@ class App extends React.Component {
   onSearch(term){
     this.autoRefreshTerm = term;
     console.log('onsearch', this.autoRefreshTerm); // XXX
+    // reset scroll position.
+    this.scrollingDiv.current.scrollToTop();
     return API.Backend.search(term).then((tweets) => {
       this.setState({tweets});
     }).catch(err => console.error('error during search', err));
@@ -125,10 +128,11 @@ class App extends React.Component {
       <div>
         <SiteMenu ref={this.siteMenu}>
           <StickyWrapper
+            ref={this.scrollingDiv}
             show={this.state.showSticky}
             sticky={stickyElement}>
 
-            <div className={classes.main} id='content'>
+            <div ref={this.contentDiv} className={classes.main} id='content'>
               
               <button
                 className={classes.menuButton + ' ' + toggleInDesktop} 

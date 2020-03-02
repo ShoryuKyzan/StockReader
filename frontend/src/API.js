@@ -1,13 +1,13 @@
 // production url, this may be typically baked into configuration instead of here
 // yes its no different from dev version
-var BACKEND_URL = 'http://localhost:8000';
+var BACKEND_URL = 'http://' + window.location.hostname + ':8000';
 var developmentMode = false;
 var productionMode = true;
 
 // If in development mode, change the backend url
 if(window.location.port === '3000')
 {
-    BACKEND_URL = 'http://localhost:8000'
+    BACKEND_URL = 'http://' + window.location.hostname + ':8000';
     developmentMode = true;
     productionMode = false;
 }

@@ -6,14 +6,10 @@ const port = 8000;
 
 var cors = require('cors')
 
-var whitelist = ['http://localhost', 'http://localhost:3000']
 var copts = {
   origin: function (origin, callback) {
-    if (whitelist.indexOf(origin) !== -1) {
-      callback(null, true)
-    } else {
-      callback(new Error('CORS Restricted'))
-    }
+    // allow all
+    callback(null, true);
   }
 }
 

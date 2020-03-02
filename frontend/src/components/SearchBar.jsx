@@ -16,18 +16,38 @@ const styles = {
     border: '1px solid black',
     padding: '0.3em',
     maxWidth: '35em',
-    margin: '0 auto'
+    margin: '0 auto',
+    position: 'relative',
+    height: '1.4em'
   },
   boxExpanded: {
     borderRadius: '0.8em 0.8em 0 0'
   },
   inputWrapper: {
     padding: '0 0.4em',
-    margin: '0 0.3em'
+    margin: '0.2em 0.3em 0',
+    position: 'absolute',
+    left: '0',
+    right: '1em',
+    top: '0',
+    bottom: '0'
   },
   searchText: {
     border: 'none',
     width: '100%'
+  },
+  searchButton: {
+    position: 'absolute',
+    right: '0.2em',
+    top: '0.2em',
+    backgroundColor: 'transparent',
+    backgroundImage: 'url(images/search.svg)',
+    backgroundRepeat: 'no-repeat no-repeat',
+    backgroundSize: '2em 2em',
+    backgroundPosition: 'center center',
+    width: '2em',
+    height: '2em',
+    border: 'none'
   },
   /* Recent searches */
   rsWrapper: {
@@ -56,6 +76,7 @@ class SearchBar extends React.Component {
     this.search = this.search.bind(this);
     this.onKeyPress = this.onKeyPress.bind(this);
     this.onDeleteRecentSearch = this.onDeleteRecentSearch.bind(this);
+    this.doSearch = this.doSearch.bind(this);
 
     this.searchBox = React.createRef();
     this.recentSearches = React.createRef();
@@ -90,12 +111,16 @@ class SearchBar extends React.Component {
     if(e.charCode !== 13){
       return;
     }
-    this.search().then(() => {
-      // close it on successful search
-      setTimeout(() => this.setState({recentOpen: false}), 0);
-    });
+    this.doSearch();
   }
   
+  doSearch() {
+    // close it on successful search
+    setTimeout(() => this.setState({recentOpen: false}), 0);
+    this.search();
+  }
+  
+
   search(){
     // TODO do this on successful search
     return this.props.onSearch(this.searchBox.current.value).then(() => {
@@ -145,6 +170,7 @@ class SearchBar extends React.Component {
                         onKeyPress={this.onKeyPress}
                         className={classes.searchText} name="search"/>
                 </div>
+                <button className={classes.searchButton} onClick={this.doSearch}>&nbsp;</button>
             </div>
             <div className={classes.rsWrapper + ' ' + recentOpenClass}>
                 <RecentSearches ref={this.recentSearches} onDeleted={this.onDeleteRecentSearch}/>
