@@ -51,11 +51,6 @@ class App extends React.Component {
       sidebarOpen: false,
       tweets: []
     };
-    this.onShowSticky = this.onShowSticky.bind(this);
-    this.mediaQueryChanged = this.mediaQueryChanged.bind(this);
-    this.menuButtonClick = this.menuButtonClick.bind(this);
-    this.onAutoRefresh = this.onAutoRefresh.bind(this);
-    this.onSearch = this.onSearch.bind(this);
 
     this.siteMenu = React.createRef();
     this.scrollingDiv = React.createRef();
@@ -63,10 +58,6 @@ class App extends React.Component {
     this.autoRefresh = null;
     this.autoRefreshTerm = null;
     this.autoRefreshTime = 20*1000;
-  }
-
-  onShowSticky(show) {
-    this.setState({showSticky: show});
   }
 
   componentWillMount() {
@@ -86,27 +77,32 @@ class App extends React.Component {
     }
   }
 
+  onShowSticky = (show) => {
+    this.setState({showSticky: show});
+  }
 
-  mediaQueryChanged() {
+  mediaQueryChanged = () => {
     this.setState({ desktopMode: mql.matches});
   }
   
-  menuButtonClick() {
+  menuButtonClick = () => {
     this.siteMenu.current.toggleMenuOpen()
   }
 
-  onAutoRefresh(){
+  onAutoRefresh = () => {
     console.log('autorefresh', this.autoRefreshTerm, new Date()); // XXX
     if(this.autoRefreshTerm){
-      this.onSearch(this.autoRefreshTerm);
+      this.onSearch(this.autoRefreshTerm, false);
     }
   }
 
-  onSearch(term){
+  onSearch = (term, resetScrollPosition) => {
     this.autoRefreshTerm = term;
     console.log('onsearch', this.autoRefreshTerm); // XXX
     // reset scroll position.
-    this.scrollingDiv.current.scrollToTop();
+    if(resetScrollPosition){
+      this.scrollingDiv.current.scrollToTop();
+    }
     return API.Backend.search(term).then((tweets) => {
       this.setState({tweets});
     }).catch(err => console.error('error during search', err));
@@ -115,7 +111,7 @@ class App extends React.Component {
   render(){
     const classes = this.props.classes;
 
-    const stickyElement = <SearchBar onSearch={this.onSearch}/>;
+    const stickyElement = <SearchBar onSearch={(term) => this.onSearch(term, true)}/>;
 
     const toggleInDesktop = this.state.desktopMode ? classes.hideMenuButton : '';
 

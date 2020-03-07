@@ -40,8 +40,8 @@ class Backend {
      */
     static async search(terms, firstPage, lastPage){
         // XXX first/lastpage not used yet
-        // const results = await callGETMethod('/search' + '?q=' + terms);
-        // return results;
+        const results = await callGETMethod('/search' + '?q=' + terms);
+        return results;
         // XXX mock
         if(!Backend.mockStart){
             Backend.mockStart = Date.now();
