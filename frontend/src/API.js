@@ -40,58 +40,31 @@ class Backend {
      */
     static async search(terms, firstPage, lastPage){
         // XXX first/lastpage not used yet
-        const results = await callGETMethod('/search' + '?q=' + terms);
-        return results;
+        // const results = await callGETMethod('/search' + '?q=' + terms);
+        // return results;
         // XXX mock
-        return [{
-            id: 1,
-            date: Date.now(),
-            content: 'asdf asdf asdf &quot; &amp; &amp;',
-            user: 'user1',
-            link: 'https://www.twitter.com/a',
-            icon: 'images/icon.png'
-        },
-        {
-            id: 2,
-            date: Date.now() + 1,
-            content: 'asdf asdf asdf',
-            user: 'user1',
-            link: 'https://www.twitter.com',
-            icon: 'images/icon.png'
-        },
-        {
-            id: 3,
-            date: Date.now() + 2,
-            content: 'asdf asdf asdf',
-            user: 'user1',
-            link: 'https://www.twitter.com',
-            icon: 'images/icon.png'
-        },
-        {
-            id: 4,
-            date: Date.now() + 2,
-            content: 'asdf asdf asdf',
-            user: 'user1',
-            link: 'https://www.twitter.com',
-            icon: 'images/icon.png'
-        },
-        {
-            id: 5,
-            date: Date.now() + 2,
-            content: 'asdf asdf asdf',
-            user: 'user1',
-            link: 'https://www.twitter.com',
-            icon: 'images/icon.png'
-        },
-        {
-            id: 6,
-            date: Date.now() + 2,
-            content: 'asdf asdf asdf',
-            user: 'user1',
-            link: 'https://www.twitter.com',
-            icon: 'images/icon.png'
-        },
-        ];
+        if(!Backend.mockStart){
+            Backend.mockStart = Date.now();
+        }
+        const tweetCount = (Date.now() - (Backend.mockStart - 10000)) / 1000;
+        const ret = [];
+        for(let i=0; i < tweetCount; i++){
+            let randomStr = 'asdf asdf asdf &amp; &quot;';
+            let randRepeat = parseInt(Math.random() * 5, 10);
+            for(let j = 0 ; j < randRepeat; j++){
+                randomStr += randomStr;
+            }
+            console.log(randomStr);
+            ret.push({
+                id: i,
+                date: Date.now() + i,
+                content: randomStr,
+                user: 'user1',
+                link: 'https://www.twitter.com/a',
+                icon: 'images/icon.png'
+            });
+        }
+        return ret;
     }
 }
 
