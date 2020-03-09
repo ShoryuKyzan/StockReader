@@ -25,6 +25,9 @@ function callGETMethod(uri){
     });
 }
 
+// XXX Mocking
+let mockedTweets = [];
+
 class Backend {
 
     /**
@@ -40,31 +43,34 @@ class Backend {
      */
     static async search(terms, firstPage, lastPage){
         // XXX first/lastpage not used yet
-        const results = await callGETMethod('/search' + '?q=' + terms);
-        return results;
+        // const results = await callGETMethod('/search' + '?q=' + terms);
+        // return results;
         // XXX mock
         if(!Backend.mockStart){
             Backend.mockStart = Date.now();
         }
-        const tweetCount = (Date.now() - (Backend.mockStart - 10000)) / 1000;
-        const ret = [];
+        const tweetCount = parseInt((Math.random() * 3) + 1, 10);
+        const startId = (mockedTweets.length === 0 ? -1 : mockedTweets[0].id) + 1;
         for(let i=0; i < tweetCount; i++){
             let randomStr = 'asdf asdf asdf &amp; &quot;';
             let randRepeat = parseInt(Math.random() * 5, 10);
             for(let j = 0 ; j < randRepeat; j++){
                 randomStr += randomStr;
             }
-            console.log(randomStr);
-            ret.push({
-                id: i,
-                date: Date.now() + i,
+            mockedTweets.unshift({
+                id: startId + i,
+                date: Date.now() + i * 1000,
                 content: randomStr,
                 user: 'user1',
                 link: 'https://www.twitter.com/a',
                 icon: 'images/icon.png'
             });
         }
-        return ret;
+        // limit mock count to 30
+        if(mockedTweets.length > 30){
+            mockedTweets = mockedTweets.slice(mockedTweets.length - 30, 30);
+        }
+        return mockedTweets;
     }
 }
 

@@ -126,7 +126,7 @@ class SearchBar extends React.Component {
     return this.props.onSearch(this.searchBox.current.value).then(() => {
       API.RecentSearches.add(this.searchBox.current.value);
       reloadRecentSearches();
-    })
+    });
   }
 
   setSearch(newSearch){

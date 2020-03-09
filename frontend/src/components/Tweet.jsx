@@ -60,7 +60,7 @@ class Tweet extends React.Component {
     const formattedDate = month + ' ' + day + ' ' + year + ' ' + hours + ':' + minutes + ':' + seconds;
 
     return (
-        <div className={classes.wrapper}>
+        <div className={classes.wrapper} id={'tweet-' + this.props.tweet.id}>
             <div className={classes.header}>
             <img className={classes.profilePic} src={this.props.tweet.icon} />
             <div className={classes.info}>

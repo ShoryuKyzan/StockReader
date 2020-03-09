@@ -85,6 +85,14 @@ class _StickyWrapper extends React.Component {
     this.scrollingDiv.current.scrollTop = 0;
   }
 
+  scroll(position){
+    this.scrollingDiv.current.scrollTop = position;
+  }
+
+  scrollTop(){
+    return this.scrollingDiv.current.scrollTop;
+  }
+
   render(){
     const classes = this.props.classes;
 
@@ -93,7 +101,7 @@ class _StickyWrapper extends React.Component {
           <div className={this.props.show ? classes.show : classes.hide}>
             {this.props.sticky}
           </div>
-          <div ref={this.scrollingDiv} className={classes.scrollable}>
+          <div onScroll={this.props.onScroll} ref={this.scrollingDiv} className={classes.scrollable}>
             {this.props.children}
           </div>
       </div>

@@ -1,4 +1,5 @@
 import React from 'react';
+import ReactDOM from 'react-dom';
 import { withStyles } from '@material-ui/core/styles';
 
 import SiteMenu from './components/SiteMenu';
@@ -54,10 +55,13 @@ class App extends React.Component {
 
     this.siteMenu = React.createRef();
     this.scrollingDiv = React.createRef();
+    this.lastTopTweetId = null;
+    this.tweetViewOffset = null;
 
     this.autoRefresh = null;
     this.autoRefreshTerm = null;
-    this.autoRefreshTime = 20*1000;
+    this.autoRefreshTime = 2*1000;
+    // XXX this.autoRefreshTime = 20*1000;
   }
 
   componentWillMount() {
@@ -76,6 +80,39 @@ class App extends React.Component {
       clearInterval(this.autoRefresh);
     }
   }
+
+  componentDidUpdate(){
+    // scroll window up by amount of new content to keep same "position"
+    let scrollNewPos = null;
+    const container = this.scrollingDiv.current;
+    console.log('pos', container.scrollTop()); // XXX
+    window.AAA = container; // XXX
+    if(container.scrollTop() !== 0){
+      if(this.lastTopTweetId){
+        const newTweetDiv = ReactDOM.findDOMNode(this).querySelector('#tweet-' + this.lastTopTweetId)
+        // if it goes off the page it wont be found anymore
+        if(newTweetDiv){
+          scrollNewPos = newTweetDiv.offsetTop - this.tweetViewOffset;
+        }else{
+          this.lastTopTweetId = null;
+        }
+        if(scrollNewPos){
+          console.log('new pos', scrollNewPos); // XXX
+          container.scroll(scrollNewPos);
+        }
+      }
+    }
+  }
+
+  onScroll = () => {
+    // start tracking movement of the top tweet down the page
+    if(this.state.tweets.length > 0 && this.scrollingDiv.current.scrollTop() !== 0){
+      this.lastTopTweetId = this.state.tweets[0].id;
+      const oldTweetPosition = ReactDOM.findDOMNode(this).querySelector('#tweet-' + this.lastTopTweetId).offsetTop;
+      this.tweetViewOffset = oldTweetPosition - this.scrollingDiv.current.scrollTop();
+    }
+  }
+
 
   onShowSticky = (show) => {
     this.setState({showSticky: show});
@@ -124,6 +161,7 @@ class App extends React.Component {
       <div>
         <SiteMenu ref={this.siteMenu}>
           <StickyWrapper
+            onScroll={this.onScroll}
             ref={this.scrollingDiv}
             show={this.state.showSticky}
             sticky={stickyElement}>
