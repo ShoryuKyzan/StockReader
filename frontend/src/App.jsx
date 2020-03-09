@@ -60,8 +60,7 @@ class App extends React.Component {
 
     this.autoRefresh = null;
     this.autoRefreshTerm = null;
-    this.autoRefreshTime = 2*1000;
-    // XXX this.autoRefreshTime = 20*1000;
+    this.autoRefreshTime = 20*1000;
   }
 
   componentWillMount() {
@@ -85,8 +84,6 @@ class App extends React.Component {
     // scroll window up by amount of new content to keep same "position"
     let scrollNewPos = null;
     const container = this.scrollingDiv.current;
-    console.log('pos', container.scrollTop()); // XXX
-    window.AAA = container; // XXX
     if(container.scrollTop() !== 0){
       if(this.lastTopTweetId){
         const newTweetDiv = ReactDOM.findDOMNode(this).querySelector('#tweet-' + this.lastTopTweetId)
@@ -97,7 +94,6 @@ class App extends React.Component {
           this.lastTopTweetId = null;
         }
         if(scrollNewPos){
-          console.log('new pos', scrollNewPos); // XXX
           container.scroll(scrollNewPos);
         }
       }
