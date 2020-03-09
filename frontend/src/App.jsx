@@ -50,7 +50,9 @@ class App extends React.Component {
       desktopMode: mql.matches,
       showSticky: false,
       sidebarOpen: false,
-      tweets: []
+      tweets: [],
+      currentTerm: '',
+      autoRefreshTerm: ''
     };
 
     this.siteMenu = React.createRef();
@@ -59,7 +61,6 @@ class App extends React.Component {
     this.tweetViewOffset = null;
 
     this.autoRefresh = null;
-    this.autoRefreshTerm = null;
     this.autoRefreshTime = 20*1000;
   }
 
@@ -109,6 +110,9 @@ class App extends React.Component {
     }
   }
 
+  onChangeSearch = (value) => {
+    this.setState({currentTerm: value});
+  }
 
   onShowSticky = (show) => {
     this.setState({showSticky: show});
@@ -123,19 +127,19 @@ class App extends React.Component {
   }
 
   onAutoRefresh = () => {
-    console.log('autorefresh', this.autoRefreshTerm, new Date()); // XXX
-    if(this.autoRefreshTerm){
-      this.onSearch(this.autoRefreshTerm, false);
+    console.log('autorefresh', this.state.autoRefreshTerm, new Date()); // XXX
+    if(this.state.autoRefreshTerm !== ''){
+      this.onSearch(this.state.autoRefreshTerm, false);
     }
   }
 
   onSearch = (term, resetScrollPosition) => {
-    this.autoRefreshTerm = term;
-    console.log('onsearch', this.autoRefreshTerm); // XXX
+    console.log('onsearch', term); // XXX
     // reset scroll position.
     if(resetScrollPosition){
       this.scrollingDiv.current.scrollToTop();
     }
+    this.setState({autoRefreshTerm: term});
     return API.Backend.search(term).then((tweets) => {
       this.setState({tweets});
     }).catch(err => console.error('error during search', err));
@@ -144,7 +148,7 @@ class App extends React.Component {
   render(){
     const classes = this.props.classes;
 
-    const stickyElement = <SearchBar onSearch={(term) => this.onSearch(term, true)}/>;
+    const stickyElement = <SearchBar onChange={this.onChangeSearch} value={this.state.currentTerm} onSearch={(term) => this.onSearch(term, true)}/>;
 
     const toggleInDesktop = this.state.desktopMode ? classes.hideMenuButton : '';
 

@@ -25,9 +25,6 @@ function callGETMethod(uri){
     });
 }
 
-// XXX Mocking
-let mockedTweets = [];
-
 class Backend {
 
     /**
@@ -46,31 +43,9 @@ class Backend {
         const results = await callGETMethod('/search' + '?q=' + terms);
         return results;
         // XXX mock
-        if(!Backend.mockStart){
-            Backend.mockStart = Date.now();
-        }
         const tweetCount = parseInt((Math.random() * 3) + 1, 10);
         const startId = (mockedTweets.length === 0 ? -1 : mockedTweets[0].id) + 1;
-        for(let i=0; i < tweetCount; i++){
-            let randomStr = 'asdf asdf asdf &amp; &quot;';
-            let randRepeat = parseInt(Math.random() * 5, 10);
-            for(let j = 0 ; j < randRepeat; j++){
-                randomStr += randomStr;
-            }
-            mockedTweets.unshift({
-                id: startId + i,
-                date: Date.now() + i * 1000,
-                content: randomStr,
-                user: 'user1',
-                link: 'https://www.twitter.com/a',
-                icon: 'images/icon.png'
-            });
-        }
-        // limit mock count to 30
-        if(mockedTweets.length > 30){
-            mockedTweets = mockedTweets.slice(mockedTweets.length - 30, 30);
-        }
-        return mockedTweets;
+        return generateTweets(startId, tweetCount);
     }
 }
 
@@ -124,6 +99,35 @@ class RecentSearches {
         RecentSearches._set(newList);
     }
 }
+
+// XXX Mocking
+let mockedTweets = [];
+
+
+function generateTweets(startId, tweetCount){
+    for(let i=0; i < tweetCount; i++){
+        let randomStr = 'asdf asdf asdf &amp; &quot;';
+        let randRepeat = parseInt(Math.random() * 5, 10);
+        for(let j = 0 ; j < randRepeat; j++){
+            randomStr += randomStr;
+        }
+        mockedTweets.unshift({
+            id: startId + i,
+            date: Date.now() + i * 1000,
+            content: randomStr,
+            user: 'user1',
+            link: 'https://www.twitter.com/a',
+            icon: 'images/icon.png'
+        });
+    }
+    // limit mock count to 30
+    if(mockedTweets.length > 30){
+        mockedTweets = mockedTweets.slice(mockedTweets.length - 30, 30);
+    }
+    return mockedTweets;
+}
+generateTweets(0, 30);
+
 
 const API = {
     Backend,

@@ -159,16 +159,13 @@ class SearchBar extends React.Component {
     return (
         <div className={classes.main} onClick={this.onFocus}>
             <div className={classes.box + ' ' + searchBarExpanded}>
-                {/* TODO for later we do this.
-                <span className={classes.searchTerm}>$PONY</span>
-                <span className={classes.searchTerm}>$TOWN</span>
-                */}
                 <div className={classes.inputWrapper}>
                     <input
                         ref={this.searchBox}
                         onFocus={this.onFocus}
                         onKeyPress={this.onKeyPress}
-                        className={classes.searchText} name="search"/>
+                        onChange={(e) => this.props.onChange(e.target.value)}
+                        className={classes.searchText} name="search" value={this.props.value}/>
                 </div>
                 <button className={classes.searchButton} onClick={this.doSearch}>&nbsp;</button>
             </div>
