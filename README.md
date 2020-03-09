@@ -7,6 +7,8 @@ A responsive interface for searching one or more symbols using StockTwits API.
 # Features
 
 * Auto-refresh every 20 seconds.
+* On auto-refresh, Scroll position auto-adjusts to keep current tweets in view. (as of right now this isnt perfect).
+* Errors reported.
 * Touch-enabled sidebar (swipe open from left or use menu icon).
 * Recent searches visible from sidebar or below search box
 * Search box is sticky, as you scroll down the page it reappears at the top.
@@ -39,3 +41,11 @@ Set up a docker environment.
 * Run nodemon main.js
 * Will run an API server on port 8000
 * You can also just run ./dev-build.sh, ./dev-up.sh to start a backend in your docker engine (also running on port 8000, forwarded to your local 8000).
+
+# Changelog
+
+## 03/09/2020
+
+* On auto-refresh, Scroll position auto-adjusts to keep current tweets in view. (as of right now this isnt perfect).
+* Errors reported.
+* Sticky search bar contents are now synchronized with the in-page one.
