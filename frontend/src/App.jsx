@@ -139,7 +139,7 @@ class App extends React.Component {
     if(resetScrollPosition){
       this.scrollingDiv.current.scrollToTop();
     }
-    this.setState({autoRefreshTerm: term});
+    this.setState({autoRefreshTerm: term, currentTerm: term});
     return API.Backend.search(term).then((tweets) => {
       this.setState({tweets});
     }).catch(err => console.error('error during search', err));

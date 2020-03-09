@@ -121,17 +121,19 @@ class SearchBar extends React.Component {
   }
   
 
-  search(){
+  search(term){
+    if(!term){
+      term = this.searchBox.current.value;
+    }
     // TODO do this on successful search
-    return this.props.onSearch(this.searchBox.current.value).then(() => {
+    return this.props.onSearch(term).then(() => {
       API.RecentSearches.add(this.searchBox.current.value);
       reloadRecentSearches();
     });
   }
 
   setSearch(newSearch){
-    this.searchBox.current.value = newSearch.data;
-    this.search().then(() => {
+    this.search(newSearch.data).then(() => {
       // close recent searches if open
       setTimeout(() => this.setState({recentOpen: false}), 0); // trigger trying to show it.
     });
