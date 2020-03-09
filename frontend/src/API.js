@@ -124,7 +124,19 @@ function generateTweets(startId, tweetCount){
     if(mockedTweets.length > 30){
         mockedTweets = mockedTweets.slice(mockedTweets.length - 30, 30);
     }
-    return mockedTweets;
+    return {
+        errors: [
+            {
+                symbol: 'AAA',
+                messages: ['Symbol not found', 'Cookies crunch crunch']
+            },
+            {
+                symbol: 'BBB',
+                messages: ['Symbol not found', 'Cookies crunch crunch']
+            }
+        ],
+        results: mockedTweets
+    };
 }
 generateTweets(0, 30);
 

@@ -5,6 +5,7 @@ import { withStyles } from '@material-ui/core/styles';
 import SiteMenu from './components/SiteMenu';
 import SearchBar from './components/SearchBar';
 import Tweet from './components/Tweet';
+import Errors from './components/Errors';
 import { StickySensor, StickyWrapper } from './components/StickToTop';
 import API from './API';
 
@@ -51,6 +52,7 @@ class App extends React.Component {
       showSticky: false,
       sidebarOpen: false,
       tweets: [],
+      errors: [],
       currentTerm: '',
       autoRefreshTerm: ''
     };
@@ -140,8 +142,11 @@ class App extends React.Component {
       this.scrollingDiv.current.scrollToTop();
     }
     this.setState({autoRefreshTerm: term, currentTerm: term});
-    return API.Backend.search(term).then((tweets) => {
-      this.setState({tweets});
+    return API.Backend.search(term).then((results) => {
+      this.setState({
+        tweets: results.results,
+        errors: results.errors
+      });
     }).catch(err => console.error('error during search', err));
   }
 
@@ -151,6 +156,11 @@ class App extends React.Component {
     const stickyElement = <SearchBar onChange={this.onChangeSearch} value={this.state.currentTerm} onSearch={(term) => this.onSearch(term, true)}/>;
 
     const toggleInDesktop = this.state.desktopMode ? classes.hideMenuButton : '';
+
+    const errors = [];
+    this.state.errors.forEach((error, i) => {
+      errors.push(<Errors error={error}/>)
+    });
 
     const tweets = [];
     this.state.tweets.forEach((tweet, i) => {
@@ -180,6 +190,7 @@ class App extends React.Component {
 
               <div>
                 {/* search results */}
+                {errors}
                 {tweets}
 
               </div>
@@ -190,6 +201,5 @@ class App extends React.Component {
     );
   }
 }
-
 
 export default withStyles(styles)(App);

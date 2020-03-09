@@ -22,7 +22,7 @@ app.get('/search', cors(copts), (req, res) => {
     input = input.replace(/[^A-Za-z0-9 ]/g,'');
 
     if(input === ''){
-        res.send('[]');
+        res.send(JSON.stringify({errors:[], results: []}));
     }
     
 
@@ -40,7 +40,7 @@ app.get('/search', cors(copts), (req, res) => {
     });
     Promise.all(pList).then(results => {
         try{
-            const parsed = parseResults(results);
+            const parsed = parseResults(symbolList, results);
             res.send(JSON.stringify(parsed));
         }catch(e){
             console.error('parse error', e);
@@ -56,19 +56,28 @@ app.get('/search', cors(copts), (req, res) => {
 /**
  * Parses results
  * 
+ * @param {Array<String>} symbolList original search terms
  * @param {Array<Object>} results results from stocktwit
  * 
  * @returns {Array<Object>} Returns results parsed into useable form. Sorted descending by date
  */
-function parseResults(results) {
+function parseResults(symbolList, results) {
     // use hash to ensure unique
     const messages = {};
+    const errorList = [];
 
     // TODO use caching to determine whether there's new results. use 'since' field possibly
     // extract all messages
-    results.forEach(list => {
+    results.forEach((list, i) => {
         // check for errors and append nothing if so
         if(list.response.status !== 200){
+            const errors = {
+                status: list.response.status,
+                symbol: symbolList[i],
+                messages: []
+            };
+            list.errors.forEach(error => errors.messages.push(error.message))
+            errorList.push(errors);
             return;
         }
         list.messages.forEach(msg => {
@@ -88,7 +97,11 @@ function parseResults(results) {
     const ret = Object.values(messages);
     // sort all messages descending by date
     ret.sort((a,b) => b.date - a.date);
-    return ret;
+
+    return {
+        errors: errorList,
+        results: ret
+    };
 }
 
 app.listen(port, () => console.log(`Server started on ${port}!`));
